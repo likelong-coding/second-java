@@ -1,0 +1,12 @@
+spring:
+  redis:
+    host: 47.96.156.51
+    port: 16379
+    password: 247907
+    lettuce:
+      pool:
+        max-active: 8 # 最大连接
+        max-idle: 8 # 最大空闲连接
+        min-idle: 0 # 最小空闲连接
+        max-wait: 100 # 连接等待时间
+    database: 2 # 指定数据库

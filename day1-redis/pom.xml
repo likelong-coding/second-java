@@ -14,6 +14,7 @@
     <modules>
         <module>jedis-demo</module>
         <module>spring-data-redis-demo</module>
+        <module>hm-dianping</module>
     </modules>
 
     <properties>

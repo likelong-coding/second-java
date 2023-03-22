@@ -21,8 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import static com.hmdp.utils.RedisConstants.*;
-import static com.hmdp.utils.SystemConstants.USER_NICK_NAME_PREFIX;
+import static com.hmdp.constants.RedisConstants.*;
+import static com.hmdp.constants.SystemConstants.USER_NICK_NAME_PREFIX;
 
 /**
  * <p>
@@ -44,10 +44,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if (RegexUtils.isPhoneInvalid(phone)) {
             return Result.fail("手机格式不正确！");
         }
-
         String code = RandomUtil.randomNumbers(6);
-
-        // 保存到redis 有效期五分钟
+        // 保存到redis 设置有效期五分钟
         stringRedisTemplate.opsForValue().set(LOGIN_CODE_KEY + phone, code, LOGIN_CODE_TTL, TimeUnit.MINUTES);
 
         // 发送验证码

@@ -12,6 +12,7 @@ spring:
     host: 47.96.156.51
     port: 16379
     password: 247907
+    database: 0
     lettuce:
       pool:
         max-active: 10

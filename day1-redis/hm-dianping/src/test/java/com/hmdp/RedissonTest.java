@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.annotation.Resource;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author likelong
@@ -37,8 +38,8 @@ class RedissonTest {
     }
 
     @Test
-    public void method1() {
-        boolean isLock = lock.tryLock();
+    public void method1() throws InterruptedException {
+        boolean isLock = lock.tryLock(1, TimeUnit.SECONDS);
         if (!isLock) {
             log.error("获取锁失败，1");
             return;

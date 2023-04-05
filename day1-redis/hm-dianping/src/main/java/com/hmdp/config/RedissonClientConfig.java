@@ -26,11 +26,20 @@ public class RedissonClientConfig {
     private String password;
 
     @Bean
-    public RedissonClient getRedissonClient() {
+    public RedissonClient redissonClient() {
         Config config = new Config();
         String redisAddress = String.format("redis://%s:%s", host, port);
         // 单节点redis
         config.useSingleServer().setAddress(redisAddress).setDatabase(database).setPassword(password);
+        return Redisson.create(config);
+    }
+
+    @Bean
+    public RedissonClient redissonClient1() {
+        Config config = new Config();
+        String redisAddress = String.format("redis://%s:%s", host, 6379);
+        // 单节点redis
+        config.useSingleServer().setAddress(redisAddress).setDatabase(database).setPassword("root");
         return Redisson.create(config);
     }
 }

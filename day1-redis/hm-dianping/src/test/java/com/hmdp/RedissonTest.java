@@ -4,6 +4,7 @@ import com.hmdp.utils.SimpleRedisLock;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.redisson.RedissonMultiLock;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.annotation.Resource;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author likelong
@@ -23,8 +23,15 @@ class RedissonTest {
 
     @Autowired
     private RedissonClient redissonClient;
+
+    @Autowired
+    private RedissonClient redissonClient1;
     // 可重入锁
-    private RLock lock;
+    private RLock lock1;
+    private RLock lock2;
+
+    // 联锁
+    private RedissonMultiLock multiLock;
 
     @Resource
     private StringRedisTemplate stringRedisTemplate;
@@ -33,13 +40,15 @@ class RedissonTest {
 
     @BeforeEach
     public void setUp() {
-        lock = redissonClient.getLock("order");
+        lock1 = redissonClient.getLock("order");
+        lock2 = redissonClient1.getLock("order");
+        multiLock = new RedissonMultiLock(lock1, lock2);
         simpleRedisLock = new SimpleRedisLock("simple", stringRedisTemplate);
     }
 
     @Test
     public void method1() throws InterruptedException {
-        boolean isLock = lock.tryLock(1, TimeUnit.SECONDS);
+        boolean isLock = multiLock.tryLock();
         if (!isLock) {
             log.error("获取锁失败，1");
             return;
@@ -49,12 +58,12 @@ class RedissonTest {
             method2();
         } finally {
             log.info("释放锁，1");
-            lock.unlock();
+            multiLock.unlock();
         }
     }
 
     public void method2() {
-        boolean isLock = lock.tryLock();
+        boolean isLock = multiLock.tryLock();
         if (!isLock) {
             log.error("获取锁失败，2");
             return;
@@ -63,7 +72,7 @@ class RedissonTest {
             log.info("获取锁成功，2");
         } finally {
             log.info("释放锁，2");
-            lock.unlock();
+            multiLock.unlock();
         }
     }
 

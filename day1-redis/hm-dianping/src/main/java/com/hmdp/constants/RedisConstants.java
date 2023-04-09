@@ -24,6 +24,7 @@ public class RedisConstants {
     public static final String SHOP_GEO_KEY = "shop:geo:";
     public static final String USER_SIGN_KEY = "sign:";
 
+    public static final String FELLOWS_KEY = "follows:";
 
     public static final String QUEUE_STREAM_ORDERS = "stream.orders";
 }

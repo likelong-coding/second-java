@@ -95,4 +95,26 @@ class HmDianPingApplicationTests {
         }
     }
 
+    /**
+     * 百万数据UV统计
+     */
+    @Test
+    public void testHyperLogLog() {
+        String[] users = new String[1000];
+        // 数组角标
+        int index = 0;
+        for (int i = 1; i <= 1000000; i++) {
+            // 赋值
+            users[index++] = "user_" + i;
+            // 每1000条发送一次
+            if (i % 1000 == 0) {
+                index = 0;
+                stringRedisTemplate.opsForHyperLogLog().add("hll2", users);
+            }
+
+        }
+        // 统计数量
+        Long size = stringRedisTemplate.opsForHyperLogLog().size("hll2");
+        System.out.println("size = " + size);
+    }
 }

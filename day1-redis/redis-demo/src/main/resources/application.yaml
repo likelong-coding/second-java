@@ -1,0 +1,10 @@
+spring:
+  redis:
+    sentinel:
+      master: mymaster # 指定master名称
+      nodes: # 指定redis-sentinel集群信息
+        - 124.222.253.33:27001
+        - 124.222.253.33:27002
+        - 124.222.253.33:27003
+server:
+  port: 9090

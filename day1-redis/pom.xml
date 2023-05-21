@@ -16,6 +16,7 @@
         <module>spring-data-redis-demo</module>
         <module>hm-dianping</module>
         <module>redis-demo</module>
+        <module>item-service</module>
     </modules>
 
     <properties>

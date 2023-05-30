@@ -25,7 +25,7 @@ public class JedisTest {
         jedis = JedisConnectionFactory.getJedis();
 
         // 选择库
-        jedis.select(1);
+        jedis.select(0);
     }
 
     @Test

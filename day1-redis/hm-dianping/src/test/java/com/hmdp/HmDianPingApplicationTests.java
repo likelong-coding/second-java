@@ -10,6 +10,7 @@ import org.springframework.data.redis.connection.RedisGeoCommands;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
@@ -116,5 +117,44 @@ class HmDianPingApplicationTests {
         // 统计数量
         Long size = stringRedisTemplate.opsForHyperLogLog().size("hll2");
         System.out.println("size = " + size);
+    }
+
+    @Test
+    public void testSetBigKey() {
+        Map<String, String> map = new HashMap<>();
+        for (int i = 1; i <= 650; i++) {
+            map.put("hello_" + i, "world!");
+        }
+        stringRedisTemplate.opsForHash().putAll("m2", map);
+    }
+
+    @Test
+    public void testBigHash() {
+        Map<String, String> map = new HashMap<>();
+        for (int i = 1; i <= 100000; i++) {
+            map.put("key_" + i, "value_" + i);
+        }
+        stringRedisTemplate.opsForHash().putAll("test:big:hash", map);
+    }
+
+    @Test
+    public void testBigString() {
+        for (int i = 1; i <= 1000; i++) {
+            stringRedisTemplate.opsForValue().set("test:str:key_" + i, "value_" + i);
+        }
+    }
+
+    @Test
+    public void testSmallHash() {
+        int hashSize = 100;
+        Map<String, String> map = new HashMap<>(hashSize);
+        for (int i = 1; i <= 100000; i++) {
+            int k = (i - 1) / hashSize;
+            int v = i % hashSize;
+            map.put("key_" + v, "value_" + v);
+            if (v == 0) {
+                stringRedisTemplate.opsForHash().putAll("test:small:hash_" + k, map);
+            }
+        }
     }
 }

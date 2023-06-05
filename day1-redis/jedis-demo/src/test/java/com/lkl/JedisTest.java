@@ -5,6 +5,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Pipeline;
 import redis.clients.jedis.resps.ScanResult;
 
 import java.util.HashMap;
@@ -115,6 +116,44 @@ public class JedisTest {
             jedis.set("test:str:key_" + i, "value_" + i);
         }
     }
+
+    /**
+     * 批处理
+     */
+    @Test
+    public void testMxx() {
+        String[] arr = new String[2000];
+        int j;
+        long b = System.currentTimeMillis();
+        for (int i = 1; i <= 100000; i++) {
+            j = (i % 1000) << 1;
+            arr[j] = "test:key_" + i;
+            arr[j + 1] = "value_" + i;
+            if (j == 0) {
+                jedis.mset(arr);
+            }
+        }
+        long e = System.currentTimeMillis();
+        System.out.println("time: " + (e - b));
+    }
+
+    @Test
+    public void testPipeline() {
+        // 创建管道
+        Pipeline pipeline = jedis.pipelined();
+        long b = System.currentTimeMillis();
+        for (int i = 1; i <= 100000; i++) {
+            // 放入命令到管道
+            pipeline.set("test:key_" + i, "value_" + i);
+            if (i % 1000 == 0) {
+                // 每放入1000条命令，批量执行
+                pipeline.sync();
+            }
+        }
+        long e = System.currentTimeMillis();
+        System.out.println("time: " + (e - b));
+    }
+
 
     @Test
     public void testSmallHash() {

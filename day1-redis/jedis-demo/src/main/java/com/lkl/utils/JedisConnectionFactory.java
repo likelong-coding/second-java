@@ -20,7 +20,7 @@ public class JedisConnectionFactory {
         jedisPoolConfig.setMinIdle(0);
         // 设置最长等待时间 200 ms
         jedisPoolConfig.setMaxWait(Duration.ofMillis(200));
-        jedisPool = new JedisPool(jedisPoolConfig, "47.96.156.51", 16379, 1000, "247907");
+        jedisPool = new JedisPool(jedisPoolConfig, "124.222.253.33", 6379, 3000, null);
     }
 
     /**

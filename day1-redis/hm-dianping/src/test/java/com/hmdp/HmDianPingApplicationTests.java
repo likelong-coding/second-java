@@ -10,6 +10,7 @@ import org.springframework.data.redis.connection.RedisGeoCommands;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -156,5 +157,18 @@ class HmDianPingApplicationTests {
                 stringRedisTemplate.opsForHash().putAll("test:small:hash_" + k, map);
             }
         }
+    }
+
+    @Test
+    public void testMsetInCluster() {
+        Map<String, String> map = new HashMap<>();
+        map.put("name", "Jack");
+        map.put("age", "21");
+        map.put("sex", "male");
+        stringRedisTemplate.opsForValue().multiSet(map);
+
+        List<String> strings = stringRedisTemplate.opsForValue().multiGet(Arrays.asList("name", "age", "sex"));
+        assert strings != null;
+        strings.forEach(System.out::println);
     }
 }

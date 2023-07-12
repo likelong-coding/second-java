@@ -5,7 +5,7 @@ import java.util.concurrent.locks.ReentrantLock;
 class ReentrantLockExample {
     int a = 0;
     // 公平锁
-    ReentrantLock lock = new ReentrantLock(true);
+    ReentrantLock lock = new ReentrantLock(false);
 
     public void writer() {
         // 获取锁
@@ -28,5 +28,10 @@ class ReentrantLockExample {
             // 释放锁
             lock.unlock();
         }
+    }
+
+    public static void main(String[] args) {
+        ReentrantLockExample demo = new ReentrantLockExample();
+        demo.writer();
     }
 }

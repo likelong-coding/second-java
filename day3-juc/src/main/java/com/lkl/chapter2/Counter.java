@@ -49,13 +49,15 @@ public class Counter {
      * 使用CAS实现线程安全计数器
      */
     private void safeCount() {
-        for (; ; ) {
-            int i = atomicI.get();
-            boolean suc = atomicI.compareAndSet(i, ++i);
-            if (suc) {
-                break;
-            }
-        }
+//        for (; ; ) {
+//            int i = atomicI.get();
+//            boolean suc = atomicI.compareAndSet(i, ++i);
+//            if (suc) {
+//                break;
+//            }
+//        }
+
+        atomicI.incrementAndGet();
     }
 
     /**

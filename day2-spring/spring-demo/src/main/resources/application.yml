@@ -3,3 +3,6 @@ server:
 logging:
   level:
     com.lkl: debug
+person:
+  age: 18
+  name: likelong

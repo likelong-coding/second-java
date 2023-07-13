@@ -18,10 +18,10 @@ public class CglibProxyDemo {
 
         Target proxy = (Target) Enhancer.create(Target.class, (MethodInterceptor) (p, method, args, methodProxy) -> {
             System.out.println("before...");
-//            Object result = method.invoke(target, args); // 用方法反射调用目标
+//            Object result = method.invoke(target, args); // 用方法反射调用目标 方法一
             // methodProxy 它可以避免反射调用
-//            Object result = methodProxy.invoke(target, args); // 内部没有用反射, 需要目标 （spring）
-            Object result = methodProxy.invokeSuper(p, args); // 内部没有用反射, 需要代理
+//            Object result = methodProxy.invoke(target, args); // 内部没有用反射, 需要目标 （spring）方法二
+            Object result = methodProxy.invokeSuper(p, args); // 内部没有用反射, 需要代理 方法三
             System.out.println("after...");
             return result;
         });

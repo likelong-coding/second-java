@@ -6,3 +6,8 @@ logging:
 person:
   age: 18
   name: likelong
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/test
+    username: root
+    password: root

@@ -16,7 +16,7 @@ public class Component1 {
 
     public void register() {
         log.debug("用户注册");
-        // source：发布者
+        // source：发布消息
         publisher.publishEvent(new UserRegisteredEvent(this));
     }
 

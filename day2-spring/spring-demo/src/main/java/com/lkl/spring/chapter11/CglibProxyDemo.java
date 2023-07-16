@@ -26,6 +26,9 @@ public class CglibProxyDemo {
             return result;
         });
 
+        // 代理对象
+        System.out.println(proxy);
+
         proxy.foo();
 
     }

@@ -30,9 +30,10 @@ public class JdkProxyDemo {
             return result; // 让代理也返回目标方法执行的结果
         });
 
+        // 使用arthas工具将动态生成字节码文件反编译为class类文件
         System.out.println(proxy.getClass());
 
         proxy.foo();
-
+        System.in.read();
     }
 }

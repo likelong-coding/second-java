@@ -13,10 +13,11 @@ public class CglibTest {
         proxy.setMethodInterceptor(new MethodInterceptor() {
             @Override
             public Object intercept(Object p, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
-                return method.invoke(target, args); // 反射调用
+                System.out.println("before...");
+                //                return method.invoke(target, args); // 反射调用
                 // FastClass（实际上还是代理） MethodProxy
 //                return methodProxy.invoke(target, args); // 内部无反射，结合目标用
-//                return methodProxy.invokeSuper(p, args); // 内部无反射，结合代理用
+                return methodProxy.invokeSuper(p, args); // 内部无反射，结合代理用
             }
         });
 

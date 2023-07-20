@@ -28,6 +28,7 @@ class Mutex implements Lock {
             if (getState() == 0) throw new
                     IllegalMonitorStateException();
             setExclusiveOwnerThread(null);
+            // setState 保证前面设置owner线程被其他线程可见
             setState(0);
             return true;
         }
@@ -41,10 +42,12 @@ class Mutex implements Lock {
     // 仅需要将操作代理到Sync上即可
     private final Sync sync = new Sync();
 
+    // 加锁（不成功加入阻塞队列）
     public void lock() {
         sync.acquire(1);
     }
 
+    // 尝试加锁（一次）
     public boolean tryLock() {
         return sync.tryAcquire(1);
     }
@@ -65,10 +68,12 @@ class Mutex implements Lock {
         return sync.hasQueuedThreads();
     }
 
+    // 加锁，可打断
     public void lockInterruptibly() throws InterruptedException {
         sync.acquireInterruptibly(1);
     }
 
+    // 尝试加锁有超时时间（一次）
     public boolean tryLock(long timeout, TimeUnit unit) throws InterruptedException {
         return sync.tryAcquireNanos(1, unit.toNanos(timeout));
     }

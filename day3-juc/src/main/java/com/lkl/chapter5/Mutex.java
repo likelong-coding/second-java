@@ -1,5 +1,6 @@
 package com.lkl.chapter5;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;
 import java.util.concurrent.locks.Condition;
@@ -76,5 +77,36 @@ class Mutex implements Lock {
     // 尝试加锁有超时时间（一次）
     public boolean tryLock(long timeout, TimeUnit unit) throws InterruptedException {
         return sync.tryAcquireNanos(1, unit.toNanos(timeout));
+    }
+
+    public static void main(String[] args) {
+        Mutex myLock = new Mutex();
+        new Thread(() -> {
+            myLock.lock();
+            System.out.println("lock1..." + LocalDateTime.now());
+//            myLock.lock();
+//            System.out.println("lock2... " + LocalDateTime.now());
+            try {
+                System.out.println("lock... t1 " + LocalDateTime.now());
+                TimeUnit.SECONDS.sleep(2);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            } finally {
+                System.out.println("unlock... t1 " + LocalDateTime.now());
+                myLock.unlock();
+            }
+        }, "t1").start();
+
+        new Thread(() -> {
+            myLock.lock();
+            try {
+                System.out.println("lock... t2 " + LocalDateTime.now());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            } finally {
+                System.out.println("unlock... t2 " + LocalDateTime.now());
+                myLock.unlock();
+            }
+        }, "t2").start();
     }
 }

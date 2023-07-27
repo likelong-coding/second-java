@@ -144,6 +144,7 @@ public class A18 {
         Target target = new Target();
         ProxyFactory proxyFactory = new ProxyFactory();
         proxyFactory.setTarget(target);
+        // 最外层调用链（环绕通知）
         proxyFactory.addAdvice(ExposeInvocationInterceptor.INSTANCE); // 准备把 MethodInvocation 放入当前线程
         proxyFactory.addAdvisors(list);
 

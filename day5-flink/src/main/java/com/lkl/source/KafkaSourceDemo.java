@@ -28,5 +28,6 @@ public class KafkaSourceDemo {
                 .fromSource(kafkaSource, WatermarkStrategy.noWatermarks(), "kafka-source")
                 .print();
         env.execute();
+
     }
 }

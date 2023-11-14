@@ -9,8 +9,19 @@ import java.util.Objects;
  */
 public class WaterSensor {
 
+    /**
+     * 传感器Id
+     */
     public String id;
+
+    /**
+     * 时间戳
+     */
     public Long ts;
+
+    /**
+     * 水位
+     */
     public Integer vc;
 
     public WaterSensor() {

@@ -129,7 +129,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
         }
         // 2.解析用户信息
         List<Long> userIds = top5.stream().map(Long::valueOf).collect(Collectors.toList());
-        // 3.根据用户id查询用户 WHERE id IN ( 5 , 1 ) ORDER BY FIELD(id, 5, 1)
+        // 3.根据用户id查询用户 WHERE id IN ( 5 , 1 ) ORDER BY FIELD(id, 5, 1) 【Redis top用户查询乱序问题】
         String idStr = StrUtil.join(",", userIds);
         List<UserDTO> userDTOS = userService.query()
                 .in("id", userIds).last("ORDER BY FIELD(id," + idStr + ")").list()
